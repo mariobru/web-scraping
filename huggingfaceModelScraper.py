@@ -39,6 +39,8 @@ def get_model_urls(pages: int, headers: dict, sleep_time: int):
             model_url = hf_url + model_box.attrs['href']
             model_urls.append(model_url)
         page += 1
+        # Sleep x seconds between requests
+        time.sleep(sleep_time)
 
     end_time = time.time()
     logging.info(f"Number of model urls stored: {len(model_urls)}")
@@ -103,6 +105,11 @@ if __name__ == '__main__':
                         help="Specify the number of pages you want to scrap.",
                         default=0,
                         required=False)
+    parser.add_argument("-s", "--sleep",
+                        type=int,
+                        help="Specify the number seconds between requests.",
+                        default=0,
+                        required=False)
     arguments = parser.parse_args()
 
     # Initialize log
@@ -116,7 +123,7 @@ if __name__ == '__main__':
     }
 
     # Get the urls for all models in the given pages
-    model_urls = get_model_urls(arguments.pages, custom_headers)
+    model_urls = get_model_urls(arguments.pages, custom_headers, arguments.sleep)
 
     # Convert scrapped data to a pandas dataframe
     start_time = time.time()
@@ -124,6 +131,7 @@ if __name__ == '__main__':
     df = pd.DataFrame()
     for url in model_urls:
         df = df.append(get_model_attributes(url, custom_headers), ignore_index=True)
+        time.sleep(arguments.sleep)
 
     end_time = time.time()
     
