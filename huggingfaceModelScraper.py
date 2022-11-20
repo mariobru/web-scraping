@@ -134,12 +134,12 @@ if __name__ == '__main__':
         time.sleep(arguments.sleep)
 
     end_time = time.time()
-    
+
     logging.info(f"Number of rows: {df.shape[0]}")
     logging.info(f"Number of cols: {df.shape[1]}")
     logging.info(f"Elapsed time: {timedelta(seconds=end_time - start_time)}")
 
-    print(df)
-
     # Download dataframe as csv file
     df.to_csv(r'huggingface_models_dataset.csv', index=False)
+    logging.info("File huggingface_models_dataset.csv has been downloaded in your current directory.")
+    logging.info("The End.")
