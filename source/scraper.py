@@ -29,7 +29,7 @@ def get_model_urls(pages: int, headers: dict, sleep_time: int):
         models_page = requests.get(hf_models_url, headers=headers)
         models_soup = BeautifulSoup(models_page.content, 'html.parser')
         model_boxes = models_soup.findAll('a', class_='block p-2')
-        if len(model_boxes) == 0 or page > pages:
+        if len(model_boxes) == 0 or page >= pages:
             break
         logging.info(f"Reading page: {page}")
         # do this for each page
