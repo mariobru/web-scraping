@@ -7,7 +7,7 @@ import time
 
 from datetime import timedelta
 
-from source.scraper import get_model_urls, get_model_attributes
+from scraper import get_model_urls, get_model_attributes
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
