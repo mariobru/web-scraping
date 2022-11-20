@@ -37,13 +37,13 @@ if __name__ == '__main__':
     # Get the urls for all models in the given pages
     model_urls = get_model_urls(arguments.pages, custom_headers, arguments.sleep)
 
-    # Convert scrapped data to a pandas dataframe
     start_time = time.time()
 
     df = pd.DataFrame()
     for url in model_urls:
         model_attrs = get_model_attributes(url, custom_headers)
         if model_attrs:
+            # Insert scrapped data as a new row in the dataframe
             df = pd.concat([df, pd.Series(model_attrs).to_frame().T])
         time.sleep(arguments.sleep)
 

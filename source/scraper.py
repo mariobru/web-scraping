@@ -55,14 +55,15 @@ def get_model_attributes(url: str, headers: dict):
     :url: url of a specific model
     :headers: custom headers used in the GET requests
     """
-    model_page = requests.get(url, headers=headers)
-    model_soup = BeautifulSoup(model_page.content, 'html.parser')
-    fields = {}
 
-    # get author, model name and likes
-    modelHeaderActions = model_soup.find('div', attrs={'data-target': 'ModelHeaderActions'})
+    fields = {}
     try:
+        model_page = requests.get(url, headers=headers)
+        model_soup = BeautifulSoup(model_page.content, 'html.parser')
+
+        modelHeaderActions = model_soup.find('div', attrs={'data-target': 'ModelHeaderActions'})
         data_props = json.loads(modelHeaderActions.attrs['data-props'].replace(r'\\"', r'\"'))
+
         target_fields = ['author', 'id', 'cardExists', 'lastModified', 'likes']
         for field in target_fields:
             if field in data_props['model']:
@@ -76,6 +77,9 @@ def get_model_attributes(url: str, headers: dict):
             fields[tag_obj['type']].append(tag_obj['id'])
             if tag_obj['type'] == 'pipeline_tag':
                 fields['subType'] = tag_obj['subType']
+
+        fields['downloads_last_month'] = model_soup.find('dd', class_='font-semibold').text.replace(',', '')
+
     except:
         logging.error(f'Error while scrapping {url}')
     return fields
