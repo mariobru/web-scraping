@@ -42,8 +42,9 @@ if __name__ == '__main__':
 
     df = pd.DataFrame()
     for url in model_urls:
-        model_attrs = pd.Series(get_model_attributes(url, custom_headers))
-        df = pd.concat([df, model_attrs.to_frame().T])
+        model_attrs = get_model_attributes(url, custom_headers)
+        if model_attrs:
+            df = pd.concat([df, pd.Series(model_attrs).to_frame().T])
         time.sleep(arguments.sleep)
 
     end_time = time.time()

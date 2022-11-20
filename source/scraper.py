@@ -48,10 +48,10 @@ def get_model_urls(pages: int, headers: dict, sleep_time: int):
 
 def get_model_attributes(url: str, headers: dict):
     """
-    This funciton will get the attributes of each model registered
+    This function will get the attributes of each model registered
     in https://huggingface.co/models given the model URL.
 
-    :url: url of an specific model
+    :url: url of a specific model
     :headers: custom headers used in the GET requests
     """
     model_page = requests.get(url, headers=headers)
@@ -60,9 +60,7 @@ def get_model_attributes(url: str, headers: dict):
 
     # get author, model name and likes
     modelHeaderActions = model_soup.find('div', attrs={'data-target': 'ModelHeaderActions'})
-    if modelHeaderActions is None:
-        print(f'Error in ModelHeaderActions: {url}')
-    else:
+    try:
         data_props = json.loads(modelHeaderActions.attrs['data-props'].replace(r'\\"', r'\"'))
         target_fields = ['author', 'id', 'cardExists', 'lastModified', 'likes']
         for field in target_fields:
@@ -71,11 +69,12 @@ def get_model_attributes(url: str, headers: dict):
 
         tag_objs = data_props['model']['tag_objs']
         for tag_obj in tag_objs:
-            # print(tag_obj) # uncomment this for better understanding of what is going on
+            # print(tag_obj) # uncomment this to understand the structure of the attributes
             if not tag_obj['type'] in fields:
                 fields[tag_obj['type']] = []
             fields[tag_obj['type']].append(tag_obj['id'])
             if tag_obj['type'] == 'pipeline_tag':
                 fields['subType'] = tag_obj['subType']
-
+    except:
+        logging.error(f'Error while scrapping {url}')
     return fields
