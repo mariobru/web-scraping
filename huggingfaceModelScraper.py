@@ -12,7 +12,7 @@ from bs4 import BeautifulSoup
 from datetime import timedelta
 
 
-def get_model_urls(pages: int, headers: dict) -> list[str]:
+def get_model_urls(pages: int, headers: dict, sleep_time: int):
     """
     This function creates a list with all the model urls in
     'https://huggingface.co/models'
@@ -47,7 +47,7 @@ def get_model_urls(pages: int, headers: dict) -> list[str]:
     return model_urls
 
 
-def get_model_attributes(url: str, headers: dict) -> dict[str, list]:
+def get_model_attributes(url: str, headers: dict):
     """
     This funciton will get the attributes of each model registered
     in https://huggingface.co/models given the model URL.
