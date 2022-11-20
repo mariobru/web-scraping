@@ -16,6 +16,7 @@ def get_model_urls(pages: int, headers: dict, sleep_time: int):
 
     :pages: number of pages to limit the scraping scope
     :headers: custom headers used in the GET requests
+    :sleep_time: time to wait between each page scrapping, in seconds
     """
     hf_url = 'https://huggingface.co'
     page = 0
