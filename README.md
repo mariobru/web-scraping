@@ -20,4 +20,29 @@ La práctica ha sido desarrollada de forma conjunta por:
 * **requirements.txt**: aquí se especifican las liberías y versiones utilizadas en el desarrollo de la práctica.
 
 ## Instrucciones de uso
+Para obtener todos los modelos disponibles en https://huggingface.co/models se debe ejecutar el siguiente comando desde un terminal:
+```
+python3 script.py
+```
+Por defecto, el script screapea toda la información disponible sin realizar pausas entre requests.
+
+Sin embargo, el script cuenta con los siguientes argumentos personalizables:
+```
+optional arguments:
+  -h, --help            show this help message and exit
+  -p PAGES, --pages PAGES
+                        Specify the number of pages you want to scrap.
+  -s SLEEP, --sleep SLEEP
+                        Specify the number seconds between requests.
+
+```
+Si se quiere limitar la ejecución a un número concreto de páginas (e.g. 10), se debe ejecutar el siguiente comando:
+```
+python3 script.py -p 10
+```
+Además, para evitar saturar el servidor, también se puede indicar al script que haga una pausa entre requests (e.g. 3 seg):
+```
+python3 script.py -p 10 -s 3
+```
+
 
