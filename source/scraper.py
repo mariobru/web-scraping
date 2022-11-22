@@ -14,7 +14,7 @@ def get_model_urls(pages: int, headers: dict, sleep_time: int):
     This function creates a list with all the model urls in
     'https://huggingface.co/models'
 
-    :pages: number of pages to limit the scraping scope
+    :pages: number of pages to limit the scraping scope. If zero, scrap all possible pages
     :headers: custom headers used in the GET requests
     :sleep_time: time to wait between each page scrapping, in seconds
     """
@@ -29,7 +29,8 @@ def get_model_urls(pages: int, headers: dict, sleep_time: int):
         models_page = requests.get(hf_models_url, headers=headers)
         models_soup = BeautifulSoup(models_page.content, 'html.parser')
         model_boxes = models_soup.findAll('a', class_='block p-2')
-        if len(model_boxes) == 0 or page >= pages:
+        # if (there are no more models) or (we scraped the specified number of pages)
+        if len(model_boxes) == 0 or (0 < pages <= page):
             break
         logging.info(f"Reading page: {page}")
         # do this for each page

@@ -15,7 +15,7 @@ if __name__ == '__main__':
     parser.add_argument("-p", "--pages",
                         type=int,
                         help="Specify the number of pages you want to scrap.",
-                        default=1,
+                        default=0,
                         required=False)
     parser.add_argument("-s", "--sleep",
                         type=int,
