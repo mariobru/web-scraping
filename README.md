@@ -54,5 +54,5 @@ El dataset se encuentra disponible en [Zenodo](https://zenodo.org/record/7347175
 
 ## Licencia
 
-El contenido de este proyecto esta licencia bajo la [CC0 1.0 Universal (CC0 1.0)
+El contenido de este proyecto esta bajo la licencia [CC0 1.0 Universal (CC0 1.0)
 Public Domain Dedication](https://creativecommons.org/publicdomain/zero/1.0/).
