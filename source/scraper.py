@@ -1,5 +1,3 @@
-# Import libraries
-
 import logging
 import json
 import requests
@@ -25,16 +23,17 @@ def get_model_urls(pages: int, headers: dict, sleep_time: int):
     start_time = time.time()
 
     while True:
+        # Get the url of the current page
         hf_models_url = hf_url + f'/models?p={page}&sort=downloads'
         models_page = requests.get(hf_models_url, headers=headers)
         models_soup = BeautifulSoup(models_page.content, 'html.parser')
         model_boxes = models_soup.findAll('a', class_='block p-2')
-        # if (there are no more models) or (we scraped the specified number of pages)
         if len(model_boxes) == 0 or (0 < pages <= page):
+            # if (there are no more models) or (we scraped the specified number of pages) stop
             break
         logging.info(f"Reading page: {page}")
-        # do this for each page
         for model_box in model_boxes:
+            # For each model within the current page, we save its URL
             model_url = hf_url + model_box.attrs['href']
             model_urls.append(model_url)
         page += 1
@@ -59,18 +58,20 @@ def get_model_attributes(url: str, headers: dict):
 
     fields = {}
     try:
+        # Get the model page
         model_page = requests.get(url, headers=headers)
         model_soup = BeautifulSoup(model_page.content, 'html.parser')
-
+        # Get the html section where are stored the model attributes
         modelHeaderActions = model_soup.find('div', attrs={'data-target': 'ModelHeaderActions'})
         data_props = json.loads(modelHeaderActions.attrs['data-props'].replace(r'\\"', r'\"'))
-
+        # Relevant fields to scrap
         target_fields = ['author', 'id', 'cardExists', 'lastModified', 'likes']
         for field in target_fields:
             if field in data_props['model']:
                 fields[field] = data_props['model'][field]
 
         tag_objs = data_props['model']['tag_objs']
+        # We scrap all fields stored within tag_objs
         for tag_obj in tag_objs:
             # print(tag_obj) # uncomment this to understand the structure of the attributes
             if not tag_obj['type'] in fields:
@@ -79,8 +80,10 @@ def get_model_attributes(url: str, headers: dict):
             if tag_obj['type'] == 'pipeline_tag':
                 fields['subType'] = tag_obj['subType']
 
+        # downloads_last_month field is in another html element
         fields['downloads_last_month'] = model_soup.find('dd', class_='font-semibold').text.replace(',', '')
 
     except:
+        # Since this process takes several hours, some models can disappear from Hugging Face since the URLs were scraped
         logging.error(f'Error while scrapping {url}')
     return fields

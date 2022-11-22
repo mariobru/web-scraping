@@ -1,5 +1,3 @@
-# Import libraries
-
 import argparse
 import logging
 import pandas as pd
