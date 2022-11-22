@@ -22,6 +22,7 @@ La práctica ha sido desarrollada de forma conjunta por:
 ## Instrucciones de uso
 Para obtener todos los modelos disponibles en https://huggingface.co/models se debe ejecutar el siguiente comando desde un terminal:
 ```
+cd source
 python3 script.py
 ```
 Por defecto, el script screapea toda la información disponible sin realizar pausas entre requests.
