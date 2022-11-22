@@ -46,4 +46,9 @@ Además, para evitar saturar el servidor, también se puede indicar al script qu
 python3 script.py -p 10 -s 3
 ```
 
+## DOI
+
+El dataset se encuentra disponible en [Zenodo](https://zenodo.org/record/7347175#.Y3y5J-zMIeb)
+
+10.5281/zenodo.7347175
 
